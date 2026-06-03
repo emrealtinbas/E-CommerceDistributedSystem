@@ -1,3 +1,4 @@
+using Catalog.Application.Abstractions.Caching;
 using Catalog.Application.Abstractions.Persistence;
 using Catalog.Application.Common.Exceptions;
 using MediatR;
@@ -6,6 +7,7 @@ namespace Catalog.Application.Products.DeactivateProduct;
 
 public sealed class DeactivateProductCommandHandler(
     IProductRepository productRepository,
+    IProductCache productCache,
     IUnitOfWork unitOfWork) : IRequestHandler<DeactivateProductCommand>
 {
     public async Task Handle(DeactivateProductCommand request, CancellationToken cancellationToken)
@@ -17,5 +19,7 @@ public sealed class DeactivateProductCommandHandler(
 
         productRepository.UseOriginalRowVersion(product, Convert.FromBase64String(request.RowVersion));
         await unitOfWork.SaveChangesAsync(cancellationToken);
+        await productCache.InvalidateProductAsync(request.ProductId, cancellationToken);
+        await productCache.InvalidateProductListAsync(cancellationToken);
     }
 }

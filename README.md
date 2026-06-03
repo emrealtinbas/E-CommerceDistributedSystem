@@ -14,7 +14,9 @@ Implemented so far:
 - Catalog create/list/get/update/deactivate API flow.
 - Optimistic concurrency using SQL Server `rowversion`.
 - Catalog seed data.
+- Catalog Redis cache-aside strategy for product reads.
 - Docker Compose SQL Server foundation.
+- Docker Compose Redis foundation.
 - Testcontainers-based integration test foundation.
 
 ## Target Microservices
@@ -60,9 +62,13 @@ dotnet build "E-CommerceDistributedSystem.sln"
 
 ## Run Catalog SQL Server
 
+Start local infrastructure:
+
 ```powershell
 docker compose -f "deploy\docker-compose.yml" up -d
 ```
+
+This starts SQL Server and Redis for the current Catalog Service phase.
 
 ## Apply Catalog Migrations
 
@@ -100,3 +106,4 @@ dotnet test "services\catalog\tests\Catalog.IntegrationTests\Catalog.Integration
 - `docs/phase-03-catalog-service-skeleton.md`
 - `docs/phase-04-catalog-persistence-and-integration-tests.md`
 - `docs/phase-05-catalog-update-concurrency-seed-and-api-tests.md`
+- `docs/phase-06-catalog-redis-cache-aside.md`
