@@ -18,6 +18,7 @@ Implemented so far:
 - Catalog integration events written through the Outbox Pattern.
 - Reliable Catalog outbox publisher with RabbitMQ publisher confirms, retry tracking, and dead-letter exchange.
 - Messaging operations hardening with SQL row claiming, RabbitMQ health check, RabbitMQ Testcontainers test, and idempotent consumer foundation.
+- Basket Service Clean Architecture skeleton with Redis-backed basket storage and checkout preparation endpoint.
 - Docker Compose SQL Server foundation.
 - Docker Compose Redis foundation.
 - Docker Compose RabbitMQ foundation.
@@ -42,6 +43,14 @@ building-blocks
 deploy
 docs
 services
+    basket
+        src
+            Basket.Api
+            Basket.Application
+            Basket.Domain
+            Basket.Infrastructure
+        tests
+            Basket.UnitTests
     catalog
         src
             Catalog.Api
@@ -121,3 +130,4 @@ dotnet test "services\catalog\tests\Catalog.IntegrationTests\Catalog.Integration
 - `docs/phase-07-rabbitmq-messaging-and-outbox-preparation.md`
 - `docs/phase-08-reliable-outbox-publisher.md`
 - `docs/phase-09-messaging-operations-hardening.md`
+- `docs/phase-10-basket-service-redis-backed-storage.md`
