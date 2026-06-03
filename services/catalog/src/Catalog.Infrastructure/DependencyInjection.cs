@@ -18,7 +18,7 @@ public static class DependencyInjection
 
         services.AddDbContext<CatalogDbContext>(options => options.UseSqlServer(connectionString));
         services.AddScoped<IProductRepository, ProductRepository>();
-        services.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<CatalogDbContext>());
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddHealthChecks().AddDbContextCheck<CatalogDbContext>("catalog-db");
 
         return services;

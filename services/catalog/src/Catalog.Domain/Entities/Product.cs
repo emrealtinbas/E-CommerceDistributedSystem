@@ -56,6 +56,24 @@ public sealed class Product
         Name = name.Trim();
     }
 
+    public void UpdateDetails(string name, string description, decimal price, string currency, Guid categoryId)
+    {
+        if (categoryId == Guid.Empty)
+        {
+            throw new ArgumentException("Category id cannot be empty.", nameof(categoryId));
+        }
+
+        ValidateName(name);
+        ValidatePrice(price);
+        ValidateCurrency(currency);
+
+        Name = name.Trim();
+        Description = description.Trim();
+        Price = price;
+        Currency = currency.Trim().ToUpperInvariant();
+        CategoryId = categoryId;
+    }
+
     public void ChangePrice(decimal price, string currency)
     {
         ValidatePrice(price);

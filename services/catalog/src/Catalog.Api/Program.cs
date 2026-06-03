@@ -1,4 +1,5 @@
 using Catalog.Application;
+using Catalog.Application.Common.Exceptions;
 using Catalog.Infrastructure;
 using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
@@ -40,6 +41,22 @@ app.UseExceptionHandler(errorApp =>
             return;
         }
 
+        if (exception is NotFoundException)
+        {
+            context.Response.StatusCode = StatusCodes.Status404NotFound;
+            await context.Response.WriteAsJsonAsync(new { error = exception.Message });
+
+            return;
+        }
+
+        if (exception is ConcurrencyConflictException)
+        {
+            context.Response.StatusCode = StatusCodes.Status409Conflict;
+            await context.Response.WriteAsJsonAsync(new { error = exception.Message });
+
+            return;
+        }
+
         context.Response.StatusCode = StatusCodes.Status500InternalServerError;
         await context.Response.WriteAsJsonAsync(new { error = "An unexpected error occurred." });
     });
@@ -57,3 +74,5 @@ app.MapControllers();
 app.MapHealthChecks("/health");
 
 app.Run();
+
+public partial class Program;

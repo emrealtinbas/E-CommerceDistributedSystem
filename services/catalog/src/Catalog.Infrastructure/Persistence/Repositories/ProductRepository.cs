@@ -18,6 +18,17 @@ internal sealed class ProductRepository(CatalogDbContext dbContext) : IProductRe
             .FirstOrDefaultAsync(product => product.Id == id, cancellationToken);
     }
 
+    public async Task<Product?> GetByIdForUpdateAsync(Guid id, CancellationToken cancellationToken)
+    {
+        return await dbContext.Products
+            .FirstOrDefaultAsync(product => product.Id == id, cancellationToken);
+    }
+
+    public void UseOriginalRowVersion(Product product, byte[] rowVersion)
+    {
+        dbContext.Entry(product).Property(item => item.RowVersion).OriginalValue = rowVersion;
+    }
+
     public async Task<IReadOnlyList<Product>> ListAsync(CancellationToken cancellationToken)
     {
         return await dbContext.Products

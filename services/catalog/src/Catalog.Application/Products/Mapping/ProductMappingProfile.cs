@@ -8,6 +8,9 @@ public sealed class ProductMappingProfile : Profile
 {
     public ProductMappingProfile()
     {
-        CreateMap<Product, ProductDto>();
+        CreateMap<Product, ProductDto>()
+            .ForCtorParam(
+                nameof(ProductDto.RowVersion),
+                options => options.MapFrom(product => Convert.ToBase64String(product.RowVersion)));
     }
 }

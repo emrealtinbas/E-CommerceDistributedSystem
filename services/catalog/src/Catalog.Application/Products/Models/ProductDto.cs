@@ -7,4 +7,5 @@ public sealed record ProductDto(
     decimal Price,
     string Currency,
     Guid CategoryId,
-    bool IsActive);
+    bool IsActive,
+    string RowVersion);

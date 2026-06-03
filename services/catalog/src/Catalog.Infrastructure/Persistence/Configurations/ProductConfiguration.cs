@@ -1,4 +1,5 @@
 using Catalog.Domain.Entities;
+using Catalog.Infrastructure.Persistence.SeedData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -30,6 +31,35 @@ internal sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(product => product.RowVersion)
             .IsRowVersion();
 
+        builder.HasOne<Category>()
+            .WithMany()
+            .HasForeignKey(product => product.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+
         builder.HasIndex(product => product.Name);
+
+        builder.HasData(
+            new
+            {
+                Id = CatalogSeedData.HeadphonesProductId,
+                Name = "Wireless Headphones",
+                Description = "Noise-cancelling wireless headphones for daily use.",
+                Price = 129.99m,
+                Currency = "USD",
+                CategoryId = CatalogSeedData.ElectronicsCategoryId,
+                IsActive = true,
+                CreatedAtUtc = CatalogSeedData.CreatedAtUtc
+            },
+            new
+            {
+                Id = CatalogSeedData.DddBookProductId,
+                Name = "Domain-Driven Design",
+                Description = "A strategic design book for complex software.",
+                Price = 49.99m,
+                Currency = "USD",
+                CategoryId = CatalogSeedData.BooksCategoryId,
+                IsActive = true,
+                CreatedAtUtc = CatalogSeedData.CreatedAtUtc
+            });
     }
 }

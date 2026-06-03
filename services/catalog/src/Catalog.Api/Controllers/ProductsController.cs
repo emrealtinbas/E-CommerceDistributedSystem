@@ -1,6 +1,8 @@
 using Catalog.Application.Products.CreateProduct;
+using Catalog.Application.Products.DeactivateProduct;
 using Catalog.Application.Products.GetProductById;
 using Catalog.Application.Products.ListProducts;
+using Catalog.Application.Products.UpdateProduct;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,6 +42,31 @@ public sealed class ProductsController(IMediator mediator) : ControllerBase
 
         return CreatedAtAction(nameof(GetById), new { id = productId }, new { id = productId });
     }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(Guid id, UpdateProductRequest request, CancellationToken cancellationToken)
+    {
+        await mediator.Send(
+            new UpdateProductCommand(
+                id,
+                request.Name,
+                request.Description,
+                request.Price,
+                request.Currency,
+                request.CategoryId,
+                request.RowVersion),
+            cancellationToken);
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Deactivate(Guid id, DeactivateProductRequest request, CancellationToken cancellationToken)
+    {
+        await mediator.Send(new DeactivateProductCommand(id, request.RowVersion), cancellationToken);
+
+        return NoContent();
+    }
 }
 
 public sealed record CreateProductRequest(
@@ -48,3 +75,13 @@ public sealed record CreateProductRequest(
     decimal Price,
     string Currency,
     Guid CategoryId);
+
+public sealed record UpdateProductRequest(
+    string Name,
+    string Description,
+    decimal Price,
+    string Currency,
+    Guid CategoryId,
+    string RowVersion);
+
+public sealed record DeactivateProductRequest(string RowVersion);

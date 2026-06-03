@@ -1,4 +1,5 @@
 using Catalog.Domain.Entities;
+using Catalog.Infrastructure.Persistence.SeedData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -14,5 +15,9 @@ internal sealed class CategoryConfiguration : IEntityTypeConfiguration<Category>
         builder.Property(category => category.Name)
             .HasMaxLength(200)
             .IsRequired();
+
+        builder.HasData(
+            new { Id = CatalogSeedData.BooksCategoryId, Name = "Books" },
+            new { Id = CatalogSeedData.ElectronicsCategoryId, Name = "Electronics" });
     }
 }
