@@ -16,6 +16,7 @@ Implemented so far:
 - Catalog seed data.
 - Catalog Redis cache-aside strategy for product reads.
 - Catalog integration events written through the Outbox Pattern.
+- Reliable Catalog outbox publisher with RabbitMQ publisher confirms, retry tracking, and dead-letter exchange.
 - Docker Compose SQL Server foundation.
 - Docker Compose Redis foundation.
 - Docker Compose RabbitMQ foundation.
@@ -117,3 +118,4 @@ dotnet test "services\catalog\tests\Catalog.IntegrationTests\Catalog.Integration
 - `docs/phase-05-catalog-update-concurrency-seed-and-api-tests.md`
 - `docs/phase-06-catalog-redis-cache-aside.md`
 - `docs/phase-07-rabbitmq-messaging-and-outbox-preparation.md`
+- `docs/phase-08-reliable-outbox-publisher.md`

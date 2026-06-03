@@ -36,12 +36,19 @@ public static class DependencyInjection
             Port = int.TryParse(rabbitMqSection["Port"], out var port) ? port : 5672,
             UserName = rabbitMqSection["UserName"] ?? "guest",
             Password = rabbitMqSection["Password"] ?? "guest",
-            ExchangeName = rabbitMqSection["ExchangeName"] ?? "ecommerce.integration"
+            ExchangeName = rabbitMqSection["ExchangeName"] ?? "ecommerce.integration",
+            DeadLetterExchangeName = rabbitMqSection["DeadLetterExchangeName"] ?? "ecommerce.integration.dlx",
+            OutboxBatchSize = int.TryParse(rabbitMqSection["OutboxBatchSize"], out var batchSize) ? batchSize : 20,
+            OutboxPollingIntervalSeconds = int.TryParse(rabbitMqSection["OutboxPollingIntervalSeconds"], out var pollingIntervalSeconds)
+                ? pollingIntervalSeconds
+                : 5,
+            MaxRetryCount = int.TryParse(rabbitMqSection["MaxRetryCount"], out var maxRetryCount) ? maxRetryCount : 5
         });
         services.AddScoped<IProductCache, RedisProductCache>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IOutboxWriter, OutboxWriter>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddHostedService<OutboxPublisherService>();
         services.AddHealthChecks().AddDbContextCheck<CatalogDbContext>("catalog-db");
 
         return services;

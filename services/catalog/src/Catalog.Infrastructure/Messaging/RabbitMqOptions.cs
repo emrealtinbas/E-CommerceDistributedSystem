@@ -13,4 +13,12 @@ public sealed class RabbitMqOptions
     public string Password { get; init; } = "guest";
 
     public string ExchangeName { get; init; } = "ecommerce.integration";
+
+    public string DeadLetterExchangeName { get; init; } = "ecommerce.integration.dlx";
+
+    public int OutboxBatchSize { get; init; } = 20;
+
+    public int OutboxPollingIntervalSeconds { get; init; } = 5;
+
+    public int MaxRetryCount { get; init; } = 5;
 }

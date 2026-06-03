@@ -26,6 +26,8 @@ public sealed class OutboxMessage
 
     public DateTimeOffset? ProcessedOnUtc { get; private set; }
 
+    public DateTimeOffset? DeadLetteredOnUtc { get; private set; }
+
     public string? Error { get; private set; }
 
     public int RetryCount { get; private set; }
@@ -40,5 +42,11 @@ public sealed class OutboxMessage
     {
         Error = error;
         RetryCount++;
+    }
+
+    public void MarkDeadLettered(DateTimeOffset deadLetteredOnUtc, string error)
+    {
+        DeadLetteredOnUtc = deadLetteredOnUtc;
+        Error = error;
     }
 }
