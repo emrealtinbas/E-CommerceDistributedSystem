@@ -37,6 +37,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{20A155DE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Basket.UnitTests", "services\basket\tests\Basket.UnitTests\Basket.UnitTests.csproj", "{F395CBC5-A359-40AB-BFF0-EAA0468B0EEA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Basket.IntegrationTests", "services\basket\tests\Basket.IntegrationTests\Basket.IntegrationTests.csproj", "{A251142E-6BA6-4B47-998E-F62C897F6B5E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -167,6 +169,18 @@ Global
 		{F395CBC5-A359-40AB-BFF0-EAA0468B0EEA}.Release|x64.Build.0 = Release|Any CPU
 		{F395CBC5-A359-40AB-BFF0-EAA0468B0EEA}.Release|x86.ActiveCfg = Release|Any CPU
 		{F395CBC5-A359-40AB-BFF0-EAA0468B0EEA}.Release|x86.Build.0 = Release|Any CPU
+		{A251142E-6BA6-4B47-998E-F62C897F6B5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A251142E-6BA6-4B47-998E-F62C897F6B5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A251142E-6BA6-4B47-998E-F62C897F6B5E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A251142E-6BA6-4B47-998E-F62C897F6B5E}.Debug|x64.Build.0 = Debug|Any CPU
+		{A251142E-6BA6-4B47-998E-F62C897F6B5E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A251142E-6BA6-4B47-998E-F62C897F6B5E}.Debug|x86.Build.0 = Debug|Any CPU
+		{A251142E-6BA6-4B47-998E-F62C897F6B5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A251142E-6BA6-4B47-998E-F62C897F6B5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A251142E-6BA6-4B47-998E-F62C897F6B5E}.Release|x64.ActiveCfg = Release|Any CPU
+		{A251142E-6BA6-4B47-998E-F62C897F6B5E}.Release|x64.Build.0 = Release|Any CPU
+		{A251142E-6BA6-4B47-998E-F62C897F6B5E}.Release|x86.ActiveCfg = Release|Any CPU
+		{A251142E-6BA6-4B47-998E-F62C897F6B5E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -188,6 +202,7 @@ Global
 		{E360CEE6-995C-4A96-B0CC-7585EF634C4A} = {53B6F2B2-53C8-F0D3-C98B-E566CDA426CD}
 		{20A155DE-9D8E-6442-D116-B4698BBF946D} = {5991CCA7-7B8E-F5C0-A704-5C636E45E198}
 		{F395CBC5-A359-40AB-BFF0-EAA0468B0EEA} = {20A155DE-9D8E-6442-D116-B4698BBF946D}
+		{A251142E-6BA6-4B47-998E-F62C897F6B5E} = {20A155DE-9D8E-6442-D116-B4698BBF946D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FB4D6DC7-12D1-4FE8-AC75-2F792313936A}
