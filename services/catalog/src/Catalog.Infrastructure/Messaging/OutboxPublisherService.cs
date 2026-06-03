@@ -1,6 +1,7 @@
 using System.Text;
 using Catalog.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -51,10 +52,12 @@ internal sealed class OutboxPublisherService(
         using var scope = scopeFactory.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
 
+        var lockId = Guid.NewGuid();
+        await ClaimPendingMessagesAsync(dbContext, lockId, cancellationToken);
+
         var messages = await dbContext.OutboxMessages
-            .Where(message => message.ProcessedOnUtc == null && message.DeadLetteredOnUtc == null)
+            .Where(message => message.LockId == lockId)
             .OrderBy(message => message.OccurredOnUtc)
-            .Take(options.OutboxBatchSize)
             .ToListAsync(cancellationToken);
 
         foreach (var message in messages)
@@ -85,6 +88,33 @@ internal sealed class OutboxPublisherService(
 
             await dbContext.SaveChangesAsync(cancellationToken);
         }
+    }
+
+    private async Task ClaimPendingMessagesAsync(
+        CatalogDbContext dbContext,
+        Guid lockId,
+        CancellationToken cancellationToken)
+    {
+        var now = DateTimeOffset.UtcNow;
+        var expiredBefore = now.AddSeconds(-options.ClaimTimeoutSeconds);
+
+        await dbContext.Database.ExecuteSqlRawAsync(
+            @";WITH PendingMessages AS
+              (
+                  SELECT TOP (@BatchSize) *
+                  FROM OutboxMessages WITH (UPDLOCK, READPAST, ROWLOCK)
+                  WHERE ProcessedOnUtc IS NULL
+                    AND DeadLetteredOnUtc IS NULL
+                    AND (LockedOnUtc IS NULL OR LockedOnUtc < @ExpiredBefore)
+                  ORDER BY OccurredOnUtc
+              )
+              UPDATE PendingMessages
+              SET LockId = @LockId,
+                  LockedOnUtc = @Now;",
+            new SqlParameter("@BatchSize", options.OutboxBatchSize),
+            new SqlParameter("@LockId", lockId),
+            new SqlParameter("@Now", now),
+            new SqlParameter("@ExpiredBefore", expiredBefore));
     }
 
     private Task<IConnection> CreateConnectionAsync(CancellationToken cancellationToken)

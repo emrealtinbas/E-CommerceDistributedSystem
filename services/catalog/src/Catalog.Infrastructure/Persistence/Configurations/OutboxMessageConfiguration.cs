@@ -22,5 +22,6 @@ internal sealed class OutboxMessageConfiguration : IEntityTypeConfiguration<Outb
             .HasMaxLength(2_000);
 
         builder.HasIndex(message => new { message.ProcessedOnUtc, message.DeadLetteredOnUtc, message.OccurredOnUtc });
+        builder.HasIndex(message => message.LockId);
     }
 }

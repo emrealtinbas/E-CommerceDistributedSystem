@@ -28,6 +28,10 @@ public sealed class OutboxMessage
 
     public DateTimeOffset? DeadLetteredOnUtc { get; private set; }
 
+    public Guid? LockId { get; private set; }
+
+    public DateTimeOffset? LockedOnUtc { get; private set; }
+
     public string? Error { get; private set; }
 
     public int RetryCount { get; private set; }
@@ -35,6 +39,8 @@ public sealed class OutboxMessage
     public void MarkProcessed(DateTimeOffset processedOnUtc)
     {
         ProcessedOnUtc = processedOnUtc;
+        LockId = null;
+        LockedOnUtc = null;
         Error = null;
     }
 
@@ -42,11 +48,15 @@ public sealed class OutboxMessage
     {
         Error = error;
         RetryCount++;
+        LockId = null;
+        LockedOnUtc = null;
     }
 
     public void MarkDeadLettered(DateTimeOffset deadLetteredOnUtc, string error)
     {
         DeadLetteredOnUtc = deadLetteredOnUtc;
+        LockId = null;
+        LockedOnUtc = null;
         Error = error;
     }
 }

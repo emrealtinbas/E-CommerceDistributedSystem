@@ -21,4 +21,6 @@ public sealed class RabbitMqOptions
     public int OutboxPollingIntervalSeconds { get; init; } = 5;
 
     public int MaxRetryCount { get; init; } = 5;
+
+    public int ClaimTimeoutSeconds { get; init; } = 60;
 }

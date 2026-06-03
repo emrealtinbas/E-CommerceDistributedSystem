@@ -42,14 +42,17 @@ public static class DependencyInjection
             OutboxPollingIntervalSeconds = int.TryParse(rabbitMqSection["OutboxPollingIntervalSeconds"], out var pollingIntervalSeconds)
                 ? pollingIntervalSeconds
                 : 5,
-            MaxRetryCount = int.TryParse(rabbitMqSection["MaxRetryCount"], out var maxRetryCount) ? maxRetryCount : 5
+            MaxRetryCount = int.TryParse(rabbitMqSection["MaxRetryCount"], out var maxRetryCount) ? maxRetryCount : 5,
+            ClaimTimeoutSeconds = int.TryParse(rabbitMqSection["ClaimTimeoutSeconds"], out var claimTimeoutSeconds) ? claimTimeoutSeconds : 60
         });
         services.AddScoped<IProductCache, RedisProductCache>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IOutboxWriter, OutboxWriter>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddHostedService<OutboxPublisherService>();
-        services.AddHealthChecks().AddDbContextCheck<CatalogDbContext>("catalog-db");
+        services.AddHealthChecks()
+            .AddDbContextCheck<CatalogDbContext>("catalog-db")
+            .AddCheck<RabbitMqHealthCheck>("rabbitmq");
 
         return services;
     }
