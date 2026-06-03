@@ -15,8 +15,10 @@ Implemented so far:
 - Optimistic concurrency using SQL Server `rowversion`.
 - Catalog seed data.
 - Catalog Redis cache-aside strategy for product reads.
+- Catalog integration events written through the Outbox Pattern.
 - Docker Compose SQL Server foundation.
 - Docker Compose Redis foundation.
+- Docker Compose RabbitMQ foundation.
 - Testcontainers-based integration test foundation.
 
 ## Target Microservices
@@ -68,7 +70,14 @@ Start local infrastructure:
 docker compose -f "deploy\docker-compose.yml" up -d
 ```
 
-This starts SQL Server and Redis for the current Catalog Service phase.
+This starts SQL Server, Redis, and RabbitMQ for the current Catalog Service phase.
+
+RabbitMQ Management UI:
+
+```text
+http://localhost:15672
+guest / guest
+```
 
 ## Apply Catalog Migrations
 
@@ -107,3 +116,4 @@ dotnet test "services\catalog\tests\Catalog.IntegrationTests\Catalog.Integration
 - `docs/phase-04-catalog-persistence-and-integration-tests.md`
 - `docs/phase-05-catalog-update-concurrency-seed-and-api-tests.md`
 - `docs/phase-06-catalog-redis-cache-aside.md`
+- `docs/phase-07-rabbitmq-messaging-and-outbox-preparation.md`
